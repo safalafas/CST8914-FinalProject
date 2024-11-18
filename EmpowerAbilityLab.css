@@ -1,0 +1,160 @@
+/* Navbar Logo Styling */
+.navbar-logo {
+    max-width: 150px; 
+    max-height: 50px; 
+    object-fit: contain;
+    vertical-align: middle; 
+  }
+
+/* Ensure focus visibility */
+:focus {
+    outline: 3px solid #007bff;
+    outline-offset: 3px;
+  }
+  
+  /* Section spacing */
+  section {
+    padding: 60px 0;
+  }
+  
+  /* Logo Styling */
+  .navbar-logo {
+    max-width: 150px;
+    max-height: 50px;
+    object-fit: contain;
+  }
+  
+  /* Center Navbar Links */
+.navbar-nav {
+    justify-content: center; /* Center-align the links */
+    flex-grow: 1; /* Make the nav items occupy all available space */
+  }
+  
+  /* Adjust the Logo */
+  .navbar-brand {
+    position: absolute; /* Keep the logo on the left */
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+  }
+  
+  /* Logo Styling */
+  .navbar-logo {
+    max-width: 150px; /* Adjust as needed */
+    max-height: 50px;
+    object-fit: contain;
+  }
+  
+  /* Navigation Links Styling */
+  .nav-link {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000; /* Adjust color if needed */
+    margin: 0 15px; /* Space between links */
+  }
+  
+  .nav-link:hover {
+    color: #007bff; /* Add hover effect */
+  }
+  
+  /* Ensure all sections are hidden initially except the active one */
+/* Hide all sections except the active one */
+
+/* Jumbotron styling */
+.jumbotron {
+    background-color: #f8f9fa;
+    padding: 30px 20px;
+  }
+  
+  /* Section titles */
+  h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  /* Learn More links styling */
+  .btn-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .btn-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* List styling for services */
+.text-left-service {
+    text-align: left;
+    margin: 0 auto;
+    padding-left: 20px;
+    max-width: 300px;
+  }
+  
+  /* Content alignment in columns */
+  .text-center {
+    margin-bottom: 20px;
+  }
+  
+  .content-section {
+    display: none; /* Hide all sections by default */
+  }
+  
+  .content-section.active {
+    display: block; /* Show the active section */
+  }
+  
+  .d-none {
+    display: none !important; /* Explicitly hide sections with d-none */
+  }
+
+  
+
+ /* General Section Styling */
+#services {
+    padding: 50px 0;
+  }
+  
+  /* Flexbox Layout for "Our Services" Intro and Logo */
+  .d-flex {
+    display: flex;
+    align-items: center;
+  }
+  
+  .services-intro-text {
+    flex: 1; /* Take up the remaining width */
+  }
+  
+  .services-logo img {
+    max-width: 150px; /* Restrict logo size */
+    height: auto;
+  }
+  
+  /* Full-Width Content Below */
+  .services-content {
+    margin-top: 30px;
+  }
+  
+  .service-item h3 {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .service-item p {
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .d-flex {
+      flex-direction: column; /* Stack the intro text and logo vertically */
+      text-align: center;
+    }
+  
+    .services-logo img {
+      margin-top: 20px; /* Add spacing between text and logo */
+    }
+  }
+  
+  
