@@ -1,160 +1,359 @@
-/* Navbar Logo Styling */
-.navbar-logo {
-    max-width: 150px; 
-    max-height: 50px; 
-    object-fit: contain;
-    vertical-align: middle; 
-  }
+/* GLOBAL STYLES */
 
-/* Ensure focus visibility */
+/* Accessibility Focus Styling */
 :focus {
     outline: 3px solid #007bff;
     outline-offset: 3px;
   }
   
-  /* Section spacing */
+  /* Section Spacing */
   section {
     padding: 60px 0;
   }
   
-  /* Logo Styling */
+  /* Text Center Styling */
+  .text-center {
+    margin-bottom: 20px;
+  }
+  
+  /* Content Sections Visibility */
+  .content-section {
+    display: none; /* Hide all sections by default */
+  }
+  .content-section.active {
+    display: block; /* Show the active section */
+  }
+  .d-none {
+    display: none !important; /* Explicitly hide sections with d-none */
+  }
+  
+  /* NAVBAR STYLING */
+  
+  /* Navbar Logo Styling */
   .navbar-logo {
     max-width: 150px;
     max-height: 50px;
     object-fit: contain;
+    vertical-align: middle;
+  }
+  
+  /* Navbar Logo Alignment */
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Center vertically */
   }
   
   /* Center Navbar Links */
-.navbar-nav {
-    justify-content: center; /* Center-align the links */
-    flex-grow: 1; /* Make the nav items occupy all available space */
-  }
-  
-  /* Adjust the Logo */
-  .navbar-brand {
-    position: absolute; /* Keep the logo on the left */
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%); /* Center vertically */
-  }
-  
-  /* Logo Styling */
-  .navbar-logo {
-    max-width: 150px; /* Adjust as needed */
-    max-height: 50px;
-    object-fit: contain;
+  .navbar-nav {
+    margin-left: auto; /* Push nav links to the right */
+    text-align: center;
   }
   
   /* Navigation Links Styling */
   .nav-link {
     font-size: 16px;
     font-weight: bold;
-    color: #000; /* Adjust color if needed */
+    color: #000; /* Default color */
     margin: 0 15px; /* Space between links */
   }
-  
   .nav-link:hover {
-    color: #007bff; /* Add hover effect */
+    color: #007bff; /* Hover effect */
+  }
+
+  .navbar-toggler-icon {
+    width: 25px;
+    height: 25px;
   }
   
-  /* Ensure all sections are hidden initially except the active one */
-/* Hide all sections except the active one */
-
-/* Jumbotron styling */
-.jumbotron {
+  /* Dropdown Menu Styling */
+  .collapse {
+    text-align: center; /* Center-align the dropdown items */
+  }
+  
+  .navbar-collapse {
+    margin-top: 10px; /* Add some spacing below the navbar logo */
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .navbar-brand {
+      flex: 0 0 auto;
+    }
+  
+    .navbar-toggler {
+      margin-right: 10px; /* Add spacing for hamburger on mobile */
+    }
+  
+    .navbar-nav .nav-item {
+      margin-bottom: 10px; /* Space between dropdown links */
+    }
+  
+    .navbar-nav .nav-link {
+      font-size: 16px;
+    }
+  }
+  
+  /* HOME SECTION */
+  
+  /* Jumbotron Styling */
+  .jumbotron {
     background-color: #f8f9fa;
     padding: 30px 20px;
   }
   
-  /* Section titles */
+  /* Section Titles */
   h3 {
     font-size: 1.25rem;
     font-weight: bold;
   }
   
-  /* Learn More links styling */
+  /* Learn More Button Links */
   .btn-link {
     color: #007bff;
     text-decoration: none;
   }
-  
   .btn-link:hover {
     text-decoration: underline;
   }
   
-  /* List styling for services */
-.text-left-service {
+  /* List Styling for Services Section */
+  .text-left-service {
     text-align: left;
     margin: 0 auto;
     padding-left: 20px;
     max-width: 300px;
   }
   
-  /* Content alignment in columns */
-  .text-center {
-    margin-bottom: 20px;
-  }
+  /* SERVICES SECTION */
   
-  .content-section {
-    display: none; /* Hide all sections by default */
-  }
-  
-  .content-section.active {
-    display: block; /* Show the active section */
-  }
-  
-  .d-none {
-    display: none !important; /* Explicitly hide sections with d-none */
-  }
-
-  
-
- /* General Section Styling */
-#services {
+  #services {
     padding: 50px 0;
   }
   
-  /* Flexbox Layout for "Our Services" Intro and Logo */
+  /* Flexbox Layout for Intro Section */
   .d-flex {
     display: flex;
     align-items: center;
   }
-  
   .services-intro-text {
     flex: 1; /* Take up the remaining width */
   }
-  
   .services-logo img {
     max-width: 150px; /* Restrict logo size */
     height: auto;
   }
   
-  /* Full-Width Content Below */
+  /* Full-Width Content Below the Intro */
   .services-content {
     margin-top: 30px;
   }
-  
   .service-item h3 {
     font-weight: bold;
     color: #333;
   }
-  
   .service-item p {
     color: #555;
     font-size: 1.1rem;
     line-height: 1.6;
   }
   
-  /* Responsive Adjustments */
+  /* Responsive Adjustments for Services Section */
   @media (max-width: 768px) {
     .d-flex {
       flex-direction: column; /* Stack the intro text and logo vertically */
       text-align: center;
     }
-  
     .services-logo img {
-      margin-top: 20px; 
+      margin-top: 20px;
     }
   }
   
+  /* SCHEDULE A CALL SECTION */
   
+  #schedule {
+    padding: 50px 0;
+  }
+  
+  /* Left Align Title and Paragraph */
+  #schedule h1,
+  #schedule p {
+    text-align: left;
+  }
+  
+  /* Form Styling */
+  form label {
+    font-weight: bold;
+  }
+  form .col-form-label span {
+    font-weight: normal;
+  }
+  form .btn-primary {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+  
+  /* Notification Messages Styling */
+  #notification {
+    font-size: 1.2rem;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  /* Add Space Between Form Start and Paragraph */
+  .mb-5 {
+    margin-bottom: 2rem; /* Adjust margin for larger spacing */
+  }
+  
+  /* Accessible Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+  }
+  
+  .switch input {
+    display: none; /* Hide the checkbox */
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* Default background color */
+    transition: 0.4s; /* Smooth transition */
+    border-radius: 25px; /* Ensure slider background is round */
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 2.5px;
+    background-color: white; /* Circle color */
+    transition: 0.4s; /* Smooth movement */
+    border-radius: 50%; /* Make the toggle circle round */
+  }
+  
+  input:checked + .slider {
+    background-color: #4caf50; /* Background color when active */
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(25px); /* Move the circle to the right */
+  }
+  
+  
+  /* "WHAT WOULD YOU LIKE TO TALK ABOUT" SECTION */
+  
+  .talk-about-options {
+    border: 2px solid #ccc; /* Border around the options */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background for better visibility */
+  }
+  .talk-about-options .form-check {
+    padding-left: 10px; /* Add some padding for alignment */
+  }
+  .form-check-input {
+    margin-right: 10px; /* Space between the checkbox and the label */
+  }
+  .talk-about-options legend {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .talk-about-options label {
+    font-size: 1rem;
+    font-weight: normal;
+  }
+  
+  /* Responsive Adjustments for "Talk About" Section */
+  @media (max-width: 768px) {
+    .talk-about-options {
+      padding: 10px; /* Adjust padding for smaller screens */
+    }
+  }
+
+
+
+  /* Modal Styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.d-none {
+  display: none;
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+}
+
+.modal button {
+  margin-top: 20px;
+}
+
+/* Button Styling for "Meet the Empower Community" */
+.meet-community-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+  background-color: #fff;
+  margin-left: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none; /* Removes link styling */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.meet-community-btn:hover,
+.meet-community-btn:focus {
+  background-color: #fff;
+  outline: 3px solid #0056b3;
+  outline-offset: 2px;
+}
+
+.meet-community-btn:active {
+  background-color: #fff;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
