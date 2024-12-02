@@ -231,3 +231,83 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
   
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("scheduleForm");
+    const phoneInput = document.getElementById("phoneNumber");
+    const emailInput = document.getElementById("email");
+    const notification = document.getElementById("notification");
+  
+    // Automatically format phone number to 613-123-1234
+    phoneInput.addEventListener("input", () => {
+      let value = phoneInput.value.replace(/\D/g, ""); // Remove non-numeric characters
+      if (value.length > 3 && value.length <= 6) {
+        value = `${value.slice(0, 3)}-${value.slice(3)}`;
+      } else if (value.length > 6) {
+        value = `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6, 10)}`;
+      }
+      phoneInput.value = value;
+  
+      // Validate phone number
+      const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+      if (phoneRegex.test(value)) {
+        phoneInput.classList.add("is-valid");
+        phoneInput.classList.remove("is-invalid");
+      } else {
+        phoneInput.classList.add("is-invalid");
+        phoneInput.classList.remove("is-valid");
+      }
+    });
+  
+    // Validate email input
+    emailInput.addEventListener("input", () => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+      if (emailRegex.test(emailInput.value)) {
+        emailInput.classList.add("is-valid");
+        emailInput.classList.remove("is-invalid");
+      } else {
+        emailInput.classList.add("is-invalid");
+        emailInput.classList.remove("is-valid");
+      }
+    });
+  
+    // Form submission handler
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+  
+      // Validate form fields
+      const phoneValid = phoneInput.classList.contains("is-valid");
+      const emailValid = emailInput.classList.contains("is-valid");
+  
+      if (phoneValid && emailValid) {
+        // Success: Show success message
+        notification.className = "alert alert-success";
+        notification.classList.remove("d-none");
+        notification.innerText = "Thank you! Your request has been submitted successfully.";
+        form.reset();
+  
+        // Clear validation classes
+        phoneInput.classList.remove("is-valid", "is-invalid");
+        emailInput.classList.remove("is-valid", "is-invalid");
+      } else {
+        // Error: Show error message
+        notification.className = "alert alert-danger";
+        notification.classList.remove("d-none");
+        notification.innerText = "Error: Please ensure all required fields are filled out correctly.";
+      }
+    });
+  });
+  
+  const checkboxes = document.querySelectorAll(".form-check-input");
+checkboxes.forEach((checkbox, index) => {
+  checkbox.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const next = checkboxes[index + 1] || checkboxes[0];
+      next.focus();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prev = checkboxes[index - 1] || checkboxes[checkboxes.length - 1];
+      prev.focus();
+    }
+  });
+});
