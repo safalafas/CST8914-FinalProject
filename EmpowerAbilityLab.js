@@ -174,30 +174,63 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    // Focus on the first invalid field
-    const firstInvalidField = form.querySelector(".is-invalid");
-    if (!form.checkValidity() && firstInvalidField) {
-      firstInvalidField.focus();
-      return;
+    // Remove any existing validation styles
+    form.querySelectorAll(".is-invalid").forEach(element => {
+      element.classList.remove("is-invalid");
+    });
+
+    // Perform validation on all required fields
+    const requiredFields = form.querySelectorAll("[required]");
+    let firstInvalidField = null;
+
+    requiredFields.forEach(field => {
+      if (!field.checkValidity()) {
+        field.classList.add("is-invalid");
+        if (!firstInvalidField) {
+          firstInvalidField = field;
+        }
+      }
+    });
+
+    // Additional custom validation for phone and email
+    if (phoneInput.value && !phoneInput.value.match(/^\d{3}-\d{3}-\d{4}$/)) {
+      phoneInput.classList.add("is-invalid");
+      if (!firstInvalidField) {
+        firstInvalidField = phoneInput;
+      }
     }
 
-    if (form.checkValidity()) {
-      // Success: Show success message
-      notification.className = "alert alert-success";
-      notification.classList.remove("d-none");
-      notification.innerText = "Thank you! Your request has been submitted successfully.";
-      form.reset();
+    if (emailInput.value && !emailInput.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      emailInput.classList.add("is-invalid");
+      if (!firstInvalidField) {
+        firstInvalidField = emailInput;
+      }
+    }
 
-      // Clear validation classes
-      const inputs = form.querySelectorAll("input, textarea");
-      inputs.forEach((input) => {
-        input.classList.remove("is-valid", "is-invalid");
-      });
-    } else {
-      // Errors: Show error styling
+    // If there's an invalid field, focus it and show error message
+    if (firstInvalidField) {
+      firstInvalidField.focus();
       notification.className = "alert alert-danger";
       notification.classList.remove("d-none");
       notification.innerText = "Error: Please ensure all required fields are filled out correctly.";
+      return;
+    }
+
+    // If we get here, the form is valid
+    notification.className = "alert alert-success";
+    notification.classList.remove("d-none");
+    notification.innerText = "Thank you! Your request has been submitted successfully.";
+
+    // Clear the form and validation classes
+    form.reset();
+    form.querySelectorAll(".is-valid, .is-invalid").forEach(element => {
+      element.classList.remove("is-valid", "is-invalid");
+    });
+
+    // Reset event description if needed
+    if (eventDescriptionGroup) {
+      eventDescriptionGroup.classList.add("d-none");
+      eventDescriptionInput.removeAttribute("required");
     }
   });
 
