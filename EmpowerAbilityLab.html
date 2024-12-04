@@ -215,7 +215,8 @@
         <form id="scheduleForm" class="needs-validation" novalidate>
           <!-- Business Name -->
           <div class="form-group row mb-4 align-items-center">
-            <label for="businessName" class="col-md-3 col-form-label">Business Name:</label>
+            <label for="businessName" class="col-md-3 col-form-label">Business Name<span class="text-danger">*</span>
+              :</label>
             <div class="col-md-9">
               <input type="text" id="businessName" class="form-control" placeholder="Enter your business name" required>
               <div class="invalid-feedback">Please provide a business name.</div>
@@ -224,7 +225,8 @@
 
           <!-- Phone Number -->
           <div class="form-group row mb-4 align-items-center">
-            <label for="phoneNumber" class="col-md-3 col-form-label">Phone Number (613-123-1234):</label>
+            <label for="phoneNumber" class="col-md-3 col-form-label">Phone Number<span class="text-danger">*</span>
+              :</label>
             <div class="col-md-9">
               <input type="tel" id="phoneNumber" class="form-control" placeholder="613-123-1234"
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
@@ -232,10 +234,10 @@
             </div>
           </div>
 
-          <!-- Email (Required) -->
+          <!-- Email -->
           <div class="form-group row mb-4 align-items-center">
             <label for="email" class="col-md-3 col-form-label">
-              Email: <span class="text-danger">(required)</span>
+              Email<span class="text-danger">*</span> :
             </label>
             <div class="col-md-9">
               <input type="email" id="email" class="form-control" placeholder="Enter your email address" required>
@@ -274,7 +276,8 @@
 
           <!-- Tell Us About Your Event -->
           <div class="form-group row mb-5 d-none" id="eventDescriptionGroup">
-            <label for="eventDescription" class="col-md-3 col-form-label">Tell us about your event:</label>
+            <label for="eventDescription" class="col-md-3 col-form-label">Tell us about your event<span
+                class="text-danger">*</span> :</label>
             <div class="col-md-9">
               <textarea id="eventDescription" class="form-control" rows="4"
                 placeholder="Describe your event"></textarea>
