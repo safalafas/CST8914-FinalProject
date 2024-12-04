@@ -1,92 +1,79 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const sections = document.querySelectorAll(".content-section");
-    const links = document.querySelectorAll(".nav-link");
+  const sections = document.querySelectorAll(".content-section");
+  const links = document.querySelectorAll(".nav-link");
+  const skipLink = document.querySelector(".skip-to-content-link");
 
-    // Function to show the specified section and hide others
-    function showSection(sectionId) {
-        sections.forEach((section) => {
-            if (section.id === sectionId) {
-                section.classList.add("active");
-                section.classList.remove("d-none"); // Show active section
-            } else {
-                section.classList.remove("active");
-                section.classList.add("d-none"); // Hide non-active sections
-            }
-        });
-
-        // Update the document title
-        document.title = `${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)} - Empower Ability Labs`;
-
-        // Update the URL hash
-        history.pushState({ section: sectionId }, document.title, `#${sectionId}`);
-    }
-
-    // Add event listeners to navigation links
-    links.forEach((link) => {
-        link.addEventListener("click", (event) => {
-            event.preventDefault();
-            const sectionId = link.getAttribute("data-section");
-            if (sectionId) {
-                showSection(sectionId);
-            }
-        });
+  // Function to activate the current section
+  function showSection(sectionId) {
+    sections.forEach((section) => {
+      if (section.id === sectionId) {
+        section.classList.add("active");
+        section.classList.remove("d-none");
+        const heading = section.querySelector("h1");
+        if (heading) heading.setAttribute("tabindex", "-1"); // Ensure it's focusable
+        heading.focus(); // Focus the main heading
+      } else {
+        section.classList.remove("active");
+        section.classList.add("d-none");
+      }
     });
 
-    // Handle browser back/forward navigation
-    window.addEventListener("popstate", (event) => {
-        if (event.state && event.state.section) {
-            showSection(event.state.section);
-        }
+    // Update the skip link target dynamically
+    skipLink.setAttribute("href", `#${sectionId}`);
+    history.pushState({ section: sectionId }, document.title, `#${sectionId}`);
+  }
+
+  // Navigation link event handlers
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const sectionId = link.getAttribute("data-section");
+      showSection(sectionId);
     });
-
-    // Show the default section or the one specified in the URL hash
-    const defaultSection = location.hash ? location.hash.substring(1) : "home";
-    showSection(defaultSection);
-});
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("scheduleForm");
-    const notification = document.getElementById("notification");
-    const inviteSpeakerCheckbox = document.getElementById("inviteSpeaker");
-    const eventDescriptionGroup = document.getElementById("eventDescriptionGroup");
-    const eventDescriptionInput = document.getElementById("eventDescription");
-    const emailSwitch = document.getElementById("emailSwitch");
-    const receiveEmailsCheckbox = document.getElementById("receiveEmails");
-    const meetCommunityButton = document.getElementById("meetCommunity");
-    const communityModal = document.getElementById("communityModal");
-    const closeModalButton = document.getElementById("closeModal");
-    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
-      // Open Modal
-  meetCommunityButton.addEventListener("click", () => {
-    communityModal.classList.remove("d-none");
-    communityModal.setAttribute("aria-hidden", "false");
-    communityModal.querySelector("button").focus();
   });
 
-  // Close Modal
-  closeModalButton.addEventListener("click", () => {
-    communityModal.classList.add("d-none");
-    communityModal.setAttribute("aria-hidden", "true");
-    meetCommunityButton.focus();
-  });
-
-  // Close Modal on Escape Key
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !communityModal.classList.contains("d-none")) {
-      communityModal.classList.add("d-none");
-      communityModal.setAttribute("aria-hidden", "true");
-      meetCommunityButton.focus();
+  // Handle browser back/forward navigation
+  window.addEventListener("popstate", (event) => {
+    if (event.state && event.state.section) {
+      showSection(event.state.section);
+    } else {
+      showSection("home");
     }
   });
 
-    // Open modal
+  // Handle skip to main content link
+  skipLink.addEventListener("click", (event) => {
+    const activeSection = document.querySelector(".content-section.active");
+    if (activeSection) {
+      const heading = activeSection.querySelector("h1");
+      if (heading) {
+        event.preventDefault();
+        heading.setAttribute("tabindex", "-1"); // Ensure it's focusable
+        heading.focus();
+      }
+    }
+  });
+
+  // Initialize the correct section on page load
+  const defaultSection = location.hash ? location.hash.substring(1) : "home";
+  showSection(defaultSection);
+
+  /* ---------------------------
+     Modal Handling
+  ----------------------------- */
+  const meetCommunityButton = document.getElementById("meetCommunity");
+  const communityModal = document.getElementById("communityModal");
+  const closeModalButton = document.getElementById("closeModal");
+  const focusableSelectors =
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  // Open modal
   function openModal() {
     communityModal.classList.remove("d-none");
     communityModal.setAttribute("aria-hidden", "false");
     meetCommunityButton.setAttribute("aria-expanded", "true");
-    closeModalButton.focus();
+    const modalTitle = communityModal.querySelector("#communityModalTitle");
+    modalTitle.focus(); // Focus the modal title first
     document.addEventListener("keydown", trapFocus);
   }
 
@@ -115,199 +102,162 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
-  
-    // Handle click event on "Meet the Empower Community"
-    meetCommunityButton.addEventListener("click", openModal);
-  
-    // Make "Meet the Empower Community" accessible via keyboard
-    meetCommunityButton.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault(); // Prevent default scroll behavior for Space
-        openModal();
-      }
-    });
-  
-    // Close the modal when clicking the Close button
-    closeModalButton.addEventListener("click", closeModal);
-  
-    // Close the modal on Escape key
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !communityModal.classList.contains("d-none")) {
-        closeModal();
-      }
-    });
-  
-    // Show/hide event description based on checkbox
-    inviteSpeakerCheckbox.addEventListener("change", () => {
-      if (inviteSpeakerCheckbox.checked) {
-        eventDescriptionGroup.classList.remove("d-none");
-        eventDescriptionInput.setAttribute("required", "true");
-      } else {
-        eventDescriptionGroup.classList.add("d-none");
-        eventDescriptionInput.removeAttribute("required");
-      }
-    });
-  
-    // Make the slider toggle accessible via keyboard
-    emailSwitch.addEventListener("keydown", (event) => {
-      if (event.key === " " || event.key === "Enter") {
-        event.preventDefault();
-        receiveEmailsCheckbox.checked = !receiveEmailsCheckbox.checked;
-        emailSwitch.setAttribute("aria-checked", receiveEmailsCheckbox.checked);
-      }
-    });
-  
-    emailSwitch.addEventListener("click", () => {
-      emailSwitch.setAttribute("aria-checked", receiveEmailsCheckbox.checked);
-    });
-  
-    // Form submission handler
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-  
-      // Check if "Invite a speaker" is selected and text box is empty
-      if (inviteSpeakerCheckbox.checked && !eventDescriptionInput.value.trim()) {
-        eventDescriptionInput.classList.add("is-invalid");
-        eventDescriptionInput.nextElementSibling.innerText =
-          "Please provide details about your event.";
-        return;
-      } else {
-        eventDescriptionInput.classList.remove("is-invalid");
-        eventDescriptionInput.nextElementSibling.innerText = "";
-      }
-  
-      if (form.checkValidity()) {
-        // Success: Show success message
-        notification.className = "alert alert-success";
-        notification.classList.remove("d-none");
-        notification.innerText = "Thank you! Your request has been submitted successfully.";
-  
-        // Reset the form
-        form.reset();
-  
-        // Remove all validation states
-        const inputs = form.querySelectorAll("input, textarea");
-        inputs.forEach((input) => {
-          input.classList.remove("is-invalid", "is-valid"); // Clear validation classes
-        });
-  
-        // Clear validation styling from the form itself
-        form.classList.remove("was-validated");
-      } else {
-        // Errors: Show error styling for invalid fields
-        notification.className = "alert alert-danger";
-        notification.classList.remove("d-none");
-        notification.innerText = "Error: Please ensure all required fields are filled out correctly.";
-  
-        // Add validation classes for inputs
-        const inputs = form.querySelectorAll("input, textarea");
-        inputs.forEach((input) => {
-          if (!input.checkValidity()) {
-            input.classList.add("is-invalid"); // Add red outline
-            input.classList.remove("is-valid");
-          } else {
-            input.classList.add("is-valid"); // Add green outline
-            input.classList.remove("is-invalid");
-          }
-        });
-  
-        // Add was-validated class to the form
-        form.classList.add("was-validated");
-      }
-    });
 
-  const inputs = form.querySelectorAll("input, textarea");
-  inputs.forEach((input) => {
-    input.addEventListener("input", () => {
-      if (input.checkValidity()) {
-        input.classList.add("is-valid");
-        input.classList.remove("is-invalid");
-      } else {
-        input.classList.add("is-invalid");
-        input.classList.remove("is-valid");
-      }
-    });
-  });
-
-  });
-  
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("scheduleForm");
-    const phoneInput = document.getElementById("phoneNumber");
-    const emailInput = document.getElementById("email");
-    const notification = document.getElementById("notification");
-  
-    // Automatically format phone number to 613-123-1234
-    phoneInput.addEventListener("input", () => {
-      let value = phoneInput.value.replace(/\D/g, ""); // Remove non-numeric characters
-      if (value.length > 3 && value.length <= 6) {
-        value = `${value.slice(0, 3)}-${value.slice(3)}`;
-      } else if (value.length > 6) {
-        value = `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6, 10)}`;
-      }
-      phoneInput.value = value;
-  
-      // Validate phone number
-      const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
-      if (phoneRegex.test(value)) {
-        phoneInput.classList.add("is-valid");
-        phoneInput.classList.remove("is-invalid");
-      } else {
-        phoneInput.classList.add("is-invalid");
-        phoneInput.classList.remove("is-valid");
-      }
-    });
-  
-    // Validate email input
-    emailInput.addEventListener("input", () => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
-      if (emailRegex.test(emailInput.value)) {
-        emailInput.classList.add("is-valid");
-        emailInput.classList.remove("is-invalid");
-      } else {
-        emailInput.classList.add("is-invalid");
-        emailInput.classList.remove("is-valid");
-      }
-    });
-  
-    // Form submission handler
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-  
-      // Validate form fields
-      const phoneValid = phoneInput.classList.contains("is-valid");
-      const emailValid = emailInput.classList.contains("is-valid");
-  
-      if (phoneValid && emailValid) {
-        // Success: Show success message
-        notification.className = "alert alert-success";
-        notification.classList.remove("d-none");
-        notification.innerText = "Thank you! Your request has been submitted successfully.";
-        form.reset();
-  
-        // Clear validation classes
-        phoneInput.classList.remove("is-valid", "is-invalid");
-        emailInput.classList.remove("is-valid", "is-invalid");
-      } else {
-        // Error: Show error message
-        notification.className = "alert alert-danger";
-        notification.classList.remove("d-none");
-        notification.innerText = "Error: Please ensure all required fields are filled out correctly.";
-      }
-    });
-  });
-  
-  const checkboxes = document.querySelectorAll(".form-check-input");
-checkboxes.forEach((checkbox, index) => {
-  checkbox.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      const next = checkboxes[index + 1] || checkboxes[0];
-      next.focus();
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      const prev = checkboxes[index - 1] || checkboxes[checkboxes.length - 1];
-      prev.focus();
+  // Modal event listeners
+  meetCommunityButton.addEventListener("click", openModal);
+  closeModalButton.addEventListener("click", closeModal);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !communityModal.classList.contains("d-none")) {
+      closeModal();
     }
+  });
+
+  /* ---------------------------
+     Schedule a Call Form Handling
+  ----------------------------- */
+  const form = document.getElementById("scheduleForm");
+  const notification = document.getElementById("notification");
+  const inviteSpeakerCheckbox = document.getElementById("inviteSpeaker");
+  const eventDescriptionGroup = document.getElementById("eventDescriptionGroup");
+  const eventDescriptionInput = document.getElementById("eventDescription");
+  const phoneInput = document.getElementById("phoneNumber");
+  const emailInput = document.getElementById("email");
+
+  // Show/hide event description based on checkbox
+  inviteSpeakerCheckbox.addEventListener("change", () => {
+    if (inviteSpeakerCheckbox.checked) {
+      eventDescriptionGroup.classList.remove("d-none");
+      eventDescriptionInput.setAttribute("required", "true");
+    } else {
+      eventDescriptionGroup.classList.add("d-none");
+      eventDescriptionInput.removeAttribute("required");
+    }
+  });
+
+  // Automatically format phone number
+  phoneInput.addEventListener("input", () => {
+    let value = phoneInput.value.replace(/\D/g, ""); // Remove non-numeric characters
+    if (value.length > 3 && value.length <= 6) {
+      value = `${value.slice(0, 3)}-${value.slice(3)}`;
+    } else if (value.length > 6) {
+      value = `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6, 10)}`;
+    }
+    phoneInput.value = value;
+
+    // Validate phone number
+    const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+    if (phoneRegex.test(value)) {
+      phoneInput.classList.add("is-valid");
+      phoneInput.classList.remove("is-invalid");
+    } else {
+      phoneInput.classList.add("is-invalid");
+      phoneInput.classList.remove("is-valid");
+    }
+  });
+
+  // Validate email input
+  emailInput.addEventListener("input", () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(emailInput.value)) {
+      emailInput.classList.add("is-valid");
+      emailInput.classList.remove("is-invalid");
+    } else {
+      emailInput.classList.add("is-invalid");
+      emailInput.classList.remove("is-valid");
+    }
+  });
+
+  // Form submission handler
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    // Focus on the first invalid field
+    const firstInvalidField = form.querySelector(".is-invalid");
+    if (!form.checkValidity() && firstInvalidField) {
+      firstInvalidField.focus();
+      return;
+    }
+
+    if (form.checkValidity()) {
+      // Success: Show success message
+      notification.className = "alert alert-success";
+      notification.classList.remove("d-none");
+      notification.innerText = "Thank you! Your request has been submitted successfully.";
+      form.reset();
+
+      // Clear validation classes
+      const inputs = form.querySelectorAll("input, textarea");
+      inputs.forEach((input) => {
+        input.classList.remove("is-valid", "is-invalid");
+      });
+    } else {
+      // Errors: Show error styling
+      notification.className = "alert alert-danger";
+      notification.classList.remove("d-none");
+      notification.innerText = "Error: Please ensure all required fields are filled out correctly.";
+    }
+  });
+
+  /* ---------------------------
+     Accessible Toggle Switch
+  ----------------------------- */
+  const emailSwitchLabel = document.getElementById("emailSwitch");
+  const receiveEmailsCheckbox = document.getElementById("receiveEmails");
+
+  // Synchronize `aria-checked` on state change
+  function updateSwitchState() {
+    const isChecked = receiveEmailsCheckbox.checked;
+    emailSwitchLabel.setAttribute("aria-checked", isChecked.toString());
+    emailSwitchLabel.setAttribute(
+      "aria-label",
+      `Receive emails about updates and services is ${isChecked ? "on" : "off"}`
+    );
+  }
+
+  // Toggle switch functionality
+  emailSwitchLabel.addEventListener("click", () => {
+    receiveEmailsCheckbox.checked = !receiveEmailsCheckbox.checked;
+    updateSwitchState();
+  });
+
+  emailSwitchLabel.addEventListener("keydown", (event) => {
+    if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      receiveEmailsCheckbox.checked = !receiveEmailsCheckbox.checked;
+      updateSwitchState();
+    }
+  });
+
+  // Initialize aria-checked on page load
+  updateSwitchState();
+
+  /* ---------------------------
+     Navbar Toggle Accessibility
+  ----------------------------- */
+  const navbarToggler = document.querySelector(".navbar-toggler");
+  const navbarCollapse = document.querySelector(".navbar-collapse");
+
+  navbarToggler.addEventListener("click", () => {
+    const isExpanded = navbarCollapse.classList.contains("show");
+    navbarToggler.setAttribute("aria-expanded", !isExpanded);
+    navbarCollapse.classList.toggle("show");
+  });
+
+  /* ---------------------------
+     Keyboard Navigation for Checkboxes
+  ----------------------------- */
+  const checkboxes = document.querySelectorAll(".form-check-input");
+  checkboxes.forEach((checkbox, index) => {
+    checkbox.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        const next = checkboxes[index + 1] || checkboxes[0];
+        next.focus();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        const prev = checkboxes[index - 1] || checkboxes[checkboxes.length - 1];
+        prev.focus();
+      }
+    });
   });
 });

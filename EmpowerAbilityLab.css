@@ -70,8 +70,8 @@ section {
 }
 .nav-link:hover,
 .nav-link:focus {
-  color: #0056b3; /* Hover and focus effect */
-  outline: 2px solid #0056b3;
+  color: #00376d; /* Hover and focus effect */
+  outline: 2px solid #00376d;
   outline-offset: 2px;
 }
 
@@ -90,7 +90,7 @@ section {
   margin-top: 10px;
 }
 .navbar .nav-link {
-  color: #6f7070; /* More specific than just .nav-link */
+  color: #0056b3; /* More specific than just .nav-link */
 }
 /* Responsive Adjustments */
 @media (max-width: 768px) {
@@ -232,15 +232,19 @@ form .btn-primary {
 }
 
 /* Accessible Toggle Switch */
+/* Toggle Switch Container */
+/* Accessible Toggle Switch */
 .switch {
   position: relative;
   display: inline-block;
   width: 50px;
   height: 25px;
 }
+
 .switch input {
-  display: none;
+  display: none; /* Hide the input */
 }
+
 .slider {
   position: absolute;
   cursor: pointer;
@@ -252,6 +256,7 @@ form .btn-primary {
   transition: 0.4s;
   border-radius: 25px;
 }
+
 .slider:before {
   position: absolute;
   content: "";
@@ -263,12 +268,21 @@ form .btn-primary {
   transition: 0.4s;
   border-radius: 50%;
 }
+
 input:checked + .slider {
   background-color: #4caf50;
 }
+
 input:checked + .slider:before {
   transform: translateX(25px);
 }
+
+/* For better alignment with the text */
+.form-group .switch {
+  margin-left: 10px;
+}
+
+
 
 /* "WHAT WOULD YOU LIKE TO TALK ABOUT" SECTION */
 .talk-about-options {
@@ -397,4 +411,21 @@ input:checked + .slider:before {
 /* Label resets to default color when the checkbox is unchecked */
 .form-check-input:not(:checked) + .form-check-label {
   color: initial; /* Replace 'black' with your desired default color */
+}
+
+
+.skip-to-content-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  z-index: 1000;
+  transform: translateY(-100%);
+}
+
+.skip-to-content-link:focus {
+  transform: translateY(0);
 }

@@ -14,6 +14,7 @@
   </head>
 
   <body>
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
     <!-- Header with Navbar -->
     <header>
       <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
@@ -62,7 +63,6 @@
   <!-- Trigger Modal -->
   <div class="center-btn-container">
   <h2>
-   
     <button
       id="meetCommunity"
       class="meet-community-btn"
@@ -106,7 +106,7 @@
 </section>
 
 <!-- Modal -->
-<div id="communityModal" class="modal d-none" aria-hidden="true" role="dialog" aria-labelledby="communityModalTitle">
+<div id="communityModal" class="modal d-none" aria-hidden="true" role="dialog" aria-labelledby="communityModalTitle" aria-live="assertive">
   <div class="modal-content">
     <h2 id="communityModalTitle">Community Steering Committee</h2>
     <p>We get aha! moments from product managers who try our services for the first time. We’ve offered many lab days, workshops, and usability testing services to organizations, including:</p>
@@ -139,7 +139,7 @@
       
             <!-- Services Logo -->
             <div class="services-logo">
-              <img src="./images/services.png" alt="Services Logo" class="img-fluid" />
+              <img src="./images/services.png" alt="Services Logo" class="img-fluid">
             </div>
           </div>
       
@@ -233,8 +233,8 @@
       
             <!-- Talk About Options -->
             <div class="form-group mb-5">
-              <fieldset role="group" aria-labelledby="talkAboutGroup">
-                <legend class="form-label">What would you like to talk about:</legend>
+              <fieldset aria-labelledby="talkAboutGroup">
+                <legend id="talkAboutGroup"class="form-label">What would you like to talk about:</legend>
                 <div class="talk-about-options border p-3 rounded">
                   <div class="form-check mb-2">
                     <input type="checkbox" id="awareness" class="form-check-input" aria-labelledby="awarenessLabel">
@@ -270,15 +270,18 @@
       
             <!-- Receive Emails Toggle -->
             <div class="form-group row mb-5">
-              <label class="col-md-3 col-form-label">Receive emails about updates and services:</label>
+              <label class="col-md-3 col-form-label" id="toggleLabel">
+                Receive emails about updates and services:
+              </label>
               <div class="col-md-9">
-                <label class="switch" tabindex="0" role="switch" aria-checked="false" id="emailSwitch">
-                  <input type="checkbox" id="receiveEmails">
+                <label class="switch" tabindex="0" role="switch" aria-checked="false" aria-labelledby="toggleLabel" id="emailSwitch">
+                  <input type="checkbox" id="receiveEmails" />
                   <span class="slider round"></span>
                 </label>
               </div>
             </div>
-      
+
+
             <!-- Submit Button -->
             <div class="form-group text-center">
               <button type="submit" id="scheduleButton" class="btn btn-primary">Schedule a Call</button>
