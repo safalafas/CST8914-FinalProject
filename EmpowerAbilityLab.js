@@ -22,7 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Dynamically update the skip link target
     skipLink.setAttribute("href", `#${sectionId}`);
-    history.pushState({ section: sectionId }, document.title, `#${sectionId}`);
+    if (!history.state || history.state.section !== sectionId) {
+      history.pushState({ section: sectionId }, document.title, `#${sectionId}`);
+    }
   }
 
   // Navigation link event handlers
@@ -36,11 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle browser back/forward navigation
   window.addEventListener("popstate", (event) => {
-    if (event.state && event.state.section) {
-      showSection(event.state.section);
-    } else {
-      showSection("home");
-    }
+    const newSectionId = event.state?.section || (location.hash ? location.hash.substring(1) : "home");
+    showSection(newSectionId);
   });
 
   // Handle skip to main content link
