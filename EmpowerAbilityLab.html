@@ -14,7 +14,7 @@
   </head>
 
   <body>
-    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    <a href="#mainContent" class="skip-to-content-link">Skip to main content</a>
     <!-- Header with Navbar -->
     <header>
       <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
@@ -48,9 +48,9 @@
     <!-- Main Content -->
     <main>
       <!-- Home Section -->
-<section id="home" class="content-section active">
+<section id="home" class="content-section active" aria-labelledby="homeHeading">
   <div class="jumbotron text-left">
-    <h1>Welcome to Empower Ability Labs!</h1>
+    <h1 id="homeHeading">Welcome to Empower Ability Labs!</h1>
     <p>
       Empower Ability Labs is a hub for learning and empathy-building. We are on a mission to foster understanding and promote inclusive digital experiences for all.
     </p>
@@ -123,13 +123,13 @@
 
     
       <!-- Services Section -->
-      <section id="services" class="content-section d-none" aria-hidden="true">
+      <section id="services" class="content-section d-none" aria-hidden="true" aria-labelledby="servicesHeading">
         <div class="container">
           <!-- Services Introduction Section -->
           <div class="d-flex align-items-center mb-5">
             <!-- "Our Services" Text -->
             <div class="services-intro-text me-4">
-              <h1 class="mb-4">Our Services</h1>
+              <h1 class="mb-4" id="servicesHeading">Our Services</h1>
               <p>
                 Dedicated space or programs designed to cultivate empathy and understanding 
                 among individuals towards the challenges faced by people with disabilities 
@@ -185,11 +185,11 @@
       
     
       <!-- Schedule a Call Section -->
-      <section id="schedule" class="content-section d-none" aria-hidden="true">
+      <section id="schedule" class="content-section d-none" aria-hidden="true" aria-labelledby="scheduleHeading">
         <div class="container">
           <!-- Introduction Section -->
           <div class="mb-5">
-            <h1 class="mb-3 text-left">Schedule a Call</h1>
+            <h1 class="mb-3 text-left" id="scheduleHeading">Schedule a Call</h1>
             <p class="text-left">
               At Empower Ability Labs, we are dedicated to cultivating empathy and driving positive change 
               through immersive experiences. Fill out the form below, and we’ll get back to you as soon as we 
@@ -234,7 +234,7 @@
             <!-- Talk About Options -->
             <div class="form-group mb-5">
               <fieldset aria-labelledby="talkAboutGroup">
-                <legend id="talkAboutGroup"class="form-label">What would you like to talk about:</legend>
+                <legend id="talkAboutGroup" class="form-label">What would you like to talk about:</legend>
                 <div class="talk-about-options border p-3 rounded">
                   <div class="form-check mb-2">
                     <input type="checkbox" id="awareness" class="form-check-input" aria-labelledby="awarenessLabel">
@@ -274,8 +274,8 @@
                 Receive emails about updates and services:
               </label>
               <div class="col-md-9">
-                <label class="switch" tabindex="0" role="switch" aria-checked="false" aria-labelledby="toggleLabel" id="emailSwitch">
-                  <input type="checkbox" id="receiveEmails" />
+                <label class="switch" tabindex="0" role="switch" aria-labelledby="toggleLabel" id="emailSwitch">
+                  <input type="checkbox" id="receiveEmails">
                   <span class="slider round"></span>
                 </label>
               </div>

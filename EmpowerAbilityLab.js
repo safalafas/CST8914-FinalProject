@@ -10,15 +10,17 @@ document.addEventListener("DOMContentLoaded", () => {
         section.classList.add("active");
         section.classList.remove("d-none");
         const heading = section.querySelector("h1");
-        if (heading) heading.setAttribute("tabindex", "-1"); // Ensure it's focusable
-        heading.focus(); // Focus the main heading
+        if (heading) {
+          heading.setAttribute("tabindex", "-1"); // Make it focusable
+          heading.focus(); // Focus on the heading of the active section
+        }
       } else {
         section.classList.remove("active");
         section.classList.add("d-none");
       }
     });
 
-    // Update the skip link target dynamically
+    // Dynamically update the skip link target
     skipLink.setAttribute("href", `#${sectionId}`);
     history.pushState({ section: sectionId }, document.title, `#${sectionId}`);
   }
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (heading) {
         event.preventDefault();
         heading.setAttribute("tabindex", "-1"); // Ensure it's focusable
-        heading.focus();
+        heading.focus(); // Focus the heading
       }
     }
   });
@@ -57,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize the correct section on page load
   const defaultSection = location.hash ? location.hash.substring(1) : "home";
   showSection(defaultSection);
+
 
   /* ---------------------------
      Modal Handling

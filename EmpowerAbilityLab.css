@@ -127,7 +127,7 @@ h3 {
 
 /* Learn More Button Links */
 .btn-link {
-  color: #007bff;
+  color: #006ee5;
   text-decoration: none;
 }
 .btn-link:hover {
@@ -396,9 +396,9 @@ input:checked + .slider:before {
 
 .learn-more-btn:hover,
 .learn-more-btn:focus {
-  background-color: #007bff; /* Maintain hover state color */
+  background-color: #006ee5; /* Maintain hover state color */
   color: #fff;
-  border: 1px solid #007bff;
+  border: 1px solid #006ee5;
 }
 
 /* Change color based on checkbox state */
@@ -416,16 +416,19 @@ input:checked + .slider:before {
 
 .skip-to-content-link {
   position: absolute;
-  top: 0;
-  left: 0;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
+  top: 10px;
+  left: 10px;
   z-index: 1000;
+  background: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
   transform: translateY(-100%);
+  transition: transform 0.3s ease;
 }
 
 .skip-to-content-link:focus {
   transform: translateY(0);
 }
+
