@@ -3,24 +3,61 @@ document.addEventListener("DOMContentLoaded", () => {
   const links = document.querySelectorAll(".nav-link");
   const skipLink = document.querySelector(".skip-to-content-link");
 
+  // Initialize sections with proper ARIA attributes
+  sections.forEach(section => {
+    section.setAttribute("aria-live", "polite");
+    section.setAttribute("role", "region");
+    const heading = section.querySelector("h1");
+    if (heading) {
+      const headingId = heading.id || `heading-${section.id}`;
+      heading.id = headingId;
+      section.setAttribute("aria-labelledby", headingId);
+    }
+  });
+
   // Function to activate the current section
   function showSection(sectionId) {
     sections.forEach((section) => {
       if (section.id === sectionId) {
         section.classList.add("active");
         section.classList.remove("d-none");
+        section.setAttribute("aria-hidden", "false");
+        section.setAttribute("aria-current", "page");
+
         const heading = section.querySelector("h1");
         if (heading) {
-          heading.setAttribute("tabindex", "-1"); // Make it focusable
-          heading.focus(); // Focus on the heading of the active section
+          heading.setAttribute("tabindex", "-1");
+
+          // Create announcement for screen readers
+          const announcement = document.createElement("div");
+          announcement.setAttribute("role", "status");
+          announcement.setAttribute("aria-live", "assertive");
+          announcement.className = "sr-only";
+          announcement.textContent = `${heading.textContent} page loaded`;
+
+          document.body.appendChild(announcement);
+          setTimeout(() => {
+            heading.focus();
+            announcement.remove();
+          }, 100);
         }
+
+        // Update navigation state
+        links.forEach(link => {
+          if (link.getAttribute("data-section") === sectionId) {
+            link.setAttribute("aria-current", "page");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
       } else {
         section.classList.remove("active");
         section.classList.add("d-none");
+        section.setAttribute("aria-hidden", "true");
+        section.removeAttribute("aria-current");
       }
     });
 
-    // Dynamically update the skip link target
     skipLink.setAttribute("href", `#${sectionId}`);
     if (!history.state || history.state.section !== sectionId) {
       history.pushState({ section: sectionId }, document.title, `#${sectionId}`);
@@ -32,7 +69,20 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const sectionId = link.getAttribute("data-section");
-      showSection(sectionId);
+      const sectionName = link.textContent;
+
+      // Create pre-navigation announcement
+      const loadingAnnouncement = document.createElement("div");
+      loadingAnnouncement.setAttribute("role", "status");
+      loadingAnnouncement.setAttribute("aria-live", "assertive");
+      loadingAnnouncement.className = "sr-only";
+      loadingAnnouncement.textContent = `Loading ${sectionName} page`;
+      document.body.appendChild(loadingAnnouncement);
+
+      setTimeout(() => {
+        showSection(sectionId);
+        loadingAnnouncement.remove();
+      }, 100);
     });
   });
 
@@ -49,8 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const heading = activeSection.querySelector("h1");
       if (heading) {
         event.preventDefault();
-        heading.setAttribute("tabindex", "-1"); // Ensure it's focusable
-        heading.focus(); // Focus the heading
+        heading.setAttribute("tabindex", "-1");
+        heading.focus();
       }
     }
   });
@@ -59,23 +109,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const defaultSection = location.hash ? location.hash.substring(1) : "home";
   showSection(defaultSection);
 
-
   /* ---------------------------
      Modal Handling
   ----------------------------- */
   const meetCommunityButton = document.getElementById("meetCommunity");
   const communityModal = document.getElementById("communityModal");
   const closeModalButton = document.getElementById("closeModal");
-  const focusableSelectors =
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  // Get all focusable elements within modal
+  const getFocusableElements = () => {
+    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const elements = communityModal.querySelectorAll(focusableSelectors);
+    return Array.from(elements).filter(el => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+  };
 
   // Open modal
   function openModal() {
     communityModal.classList.remove("d-none");
     communityModal.setAttribute("aria-hidden", "false");
     meetCommunityButton.setAttribute("aria-expanded", "true");
-    const modalTitle = communityModal.querySelector("#communityModalTitle");
-    modalTitle.focus(); // Focus the modal title first
+
+    // Set initial focus after a brief delay to ensure modal is visible
+    setTimeout(() => {
+      const modalTitle = communityModal.querySelector("#communityModalTitle");
+      if (modalTitle) {
+        modalTitle.focus();
+      } else {
+        const firstFocusable = getFocusableElements()[0];
+        if (firstFocusable) firstFocusable.focus();
+      }
+    }, 50);
+
     document.addEventListener("keydown", trapFocus);
   }
 
@@ -84,23 +148,26 @@ document.addEventListener("DOMContentLoaded", () => {
     communityModal.classList.add("d-none");
     communityModal.setAttribute("aria-hidden", "true");
     meetCommunityButton.setAttribute("aria-expanded", "false");
-    meetCommunityButton.focus();
+    meetCommunityButton.focus(); // Return focus to the trigger button
     document.removeEventListener("keydown", trapFocus);
   }
 
   // Trap focus inside the modal
   function trapFocus(event) {
-    const focusableElements = communityModal.querySelectorAll(focusableSelectors);
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
     if (event.key === "Tab") {
-      if (event.shiftKey && document.activeElement === firstElement) {
+      const focusableElements = getFocusableElements();
+      const firstFocusableElement = focusableElements[0];
+      const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+      // Going backwards from first element
+      if (event.shiftKey && document.activeElement === firstFocusableElement) {
         event.preventDefault();
-        lastElement.focus();
-      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        lastFocusableElement.focus();
+      }
+      // Going forwards from last element
+      else if (!event.shiftKey && document.activeElement === lastFocusableElement) {
         event.preventDefault();
-        firstElement.focus();
+        firstFocusableElement.focus();
       }
     }
   }
@@ -110,6 +177,13 @@ document.addEventListener("DOMContentLoaded", () => {
   closeModalButton.addEventListener("click", closeModal);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !communityModal.classList.contains("d-none")) {
+      closeModal();
+    }
+  });
+
+  // Optional: Close when clicking outside the modal
+  communityModal.addEventListener("click", (event) => {
+    if (event.target === communityModal) {
       closeModal();
     }
   });
@@ -138,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Automatically format phone number
   phoneInput.addEventListener("input", () => {
-    let value = phoneInput.value.replace(/\D/g, ""); // Remove non-numeric characters
+    let value = phoneInput.value.replace(/\D/g, "");
     if (value.length > 3 && value.length <= 6) {
       value = `${value.slice(0, 3)}-${value.slice(3)}`;
     } else if (value.length > 6) {
