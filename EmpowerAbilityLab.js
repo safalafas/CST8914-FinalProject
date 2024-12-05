@@ -66,8 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const meetCommunityButton = document.getElementById("meetCommunity");
   const communityModal = document.getElementById("communityModal");
   const closeModalButton = document.getElementById("closeModal");
-  const focusableSelectors =
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
   // Open modal
   function openModal() {
@@ -76,6 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
     meetCommunityButton.setAttribute("aria-expanded", "true");
     const modalTitle = communityModal.querySelector("#communityModalTitle");
     modalTitle.focus(); // Focus the modal title first
+    const modalFocusableElements = communityModal.querySelectorAll(focusableSelectors);
+        if (modalFocusableElements.length > 0) {
+            modalFocusableElements[0].focus(); // Focus the first focusable element in the modal
+        }
     document.addEventListener("keydown", trapFocus);
   }
 
@@ -90,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Trap focus inside the modal
   function trapFocus(event) {
+    if (communityModal.classList.contains("d-none")) return;
     const focusableElements = communityModal.querySelectorAll(focusableSelectors);
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
